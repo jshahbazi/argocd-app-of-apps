@@ -2,7 +2,7 @@
 
 This tutorial guides you through deploying an Amazon EKS cluster with addons configured via ArgoCD, employing the [GitOps Bridge Pattern](https://github.com/gitops-bridge-dev).
 
-<img src="https://raw.githubusercontent.com/aws-ia/terraform-aws-eks-blueprints/main/patterns/gitops/getting-started-argocd/static/gitops-bridge.drawio.png" width=100%>
+<img src="https://raw.githubusercontent.com/jshahbazi/terraform-aws-eks-blueprints/main/patterns/gitops/getting-started-argocd/static/gitops-bridge.drawio.png" width=100%>
 
 The [GitOps Bridge Pattern](https://github.com/gitops-bridge-dev) enables Kubernetes administrators to utilize Infrastructure as Code (IaC) and GitOps tools for deploying Kubernetes Addons and Workloads. Addons often depend on Cloud resources that are external to the cluster. The configuration metadata for these external resources is required by the Addons' Helm charts. While IaC is used to create these cloud resources, it is not used to install the Helm charts. Instead, the IaC tool stores this metadata either within GitOps resources in the cluster or in a Git repository. The GitOps tool then extracts these metadata values and passes them to the Helm chart during the Addon installation process. This mechanism forms the bridge between IaC and GitOps, hence the term "GitOps Bridge."
 
@@ -50,8 +50,8 @@ terraform output -raw configure_kubectl
 The expected output will have two lines you run in your terminal
 
 ```text
-export KUBECONFIG="/tmp/getting-started-gitops"
-aws eks --region us-west-2 update-kubeconfig --name getting-started-gitops
+export KUBECONFIG="/tmp/app-of-apps"
+aws eks --region us-west-2 update-kubeconfig --name app-of-apps
 ```
 
 >The first line sets the `KUBECONFIG` environment variable to a temporary file
@@ -76,7 +76,7 @@ The output looks like the following:
   "addons_repo_revision": "main",
   "addons_repo_url": "https://github.com/aws-samples/eks-blueprints-add-ons",
   "aws_account_id": "0123456789",
-  "aws_cluster_name": "getting-started-gitops",
+  "aws_cluster_name": "app-of-apps",
   "aws_load_balancer_controller_iam_role_arn": "arn:aws:iam::0123456789:role/alb-controller",
   "aws_load_balancer_controller_namespace": "kube-system",
   "aws_load_balancer_controller_service_account": "aws-load-balancer-controller-sa",
@@ -85,7 +85,7 @@ The output looks like the following:
   "cluster_name": "in-cluster",
   "environment": "dev",
   "workload_repo_basepath": "patterns/gitops/",
-  "workload_repo_path": "getting-started-argocd/k8s",
+  "workload_repo_path": "app-of-apps/k8s",
   "workload_repo_revision": "main",
   "workload_repo_url": "https://github.com/csantanapr/terraform-aws-eks-blueprints"
 }
@@ -102,7 +102,7 @@ The output looks like the following:
 ```json
 {
   "argocd.argoproj.io/secret-type": "cluster",
-  "aws_cluster_name": "getting-started-gitops",
+  "aws_cluster_name": "app-of-apps",
   "cluster_name": "in-cluster",
   "enable_argocd": "true",
   "enable_aws_load_balancer_controller": "true",
@@ -198,7 +198,7 @@ Use `Ctrl+C` or `Cmd+C` to exit the `watch` command. ArgoCD Applications
 can take a couple of minutes in order to achieve the Healthy status.
 
 ```shell
-watch kubectl get -n argocd applications workloads
+kubectl get -n argocd applications workloads -w
 ```
 
 The expected output should look like the following:

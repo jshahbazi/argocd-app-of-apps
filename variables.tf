@@ -57,7 +57,7 @@ variable "gitops_workload_org" {
 variable "gitops_workload_repo" {
   description = "Git repository contains for workload"
   type        = string
-  default     = "terraform-aws-eks-blueprints"
+  default     = "argocd-app-of-apps"
 }
 variable "gitops_workload_revision" {
   description = "Git repository revision/branch/ref for workload"
@@ -67,10 +67,10 @@ variable "gitops_workload_revision" {
 variable "gitops_workload_basepath" {
   description = "Git repository base path for workload"
   type        = string
-  default     = "patterns/gitops/"
+  default     = ""
 }
 variable "gitops_workload_path" {
   description = "Git repository path for workload"
   type        = string
-  default     = "getting-started-argocd/k8s"
+  default     = "k8s"
 }

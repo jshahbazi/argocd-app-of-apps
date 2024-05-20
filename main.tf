@@ -31,7 +31,7 @@ provider "kubernetes" {
 }
 
 locals {
-  name   = "getting-started-gitops"
+  name   = "app-of-apps"
   region = var.region
 
   cluster_version = var.kubernetes_version
@@ -131,7 +131,7 @@ locals {
 # GitOps Bridge: Bootstrap
 ################################################################################
 module "gitops_bridge_bootstrap" {
-  source = "github.com/gitops-bridge-dev/gitops-bridge-argocd-bootstrap-terraform?ref=v2.0.0"
+  source = "github.com/gitops-bridge-dev/terraform-helm-gitops-bridge?ref=v0.0.2"
 
   cluster = {
     metadata = local.addons_metadata
@@ -143,8 +143,8 @@ module "gitops_bridge_bootstrap" {
 # EKS Blueprints Addons
 ################################################################################
 module "eks_blueprints_addons" {
-  source  = "jshahbazi/eks-blueprints-addons/aws"
-  version = "~> 1.0"
+  source  = "aws-ia/eks-blueprints-addons/aws"
+  version = "~> 1.16"
 
   cluster_name      = module.eks.cluster_name
   cluster_endpoint  = module.eks.cluster_endpoint
